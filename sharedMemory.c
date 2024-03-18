@@ -42,3 +42,55 @@ int main(int argc, char *argv[ ])
 	else
 		printf("Removed Successfully");
 }
+
+
+
+
+
+
+
+
+/*
+#include<stdio.h>
+#include<unistd.h>
+#include<stdlib.h>
+#include<sys/ipc.h>
+#include<sys/shm.h>
+#include<sys/types.h>
+void main(){
+	key_t m =ftok(".","s");
+	printf("Key= %d\n",m);
+	int ShmId=shmget(m,1022,IPC_CREAT|0666);
+	printf("ShmId= %d\n",ShmId);
+	int *ShmAttachment=shmat(ShmId,0,0);
+	printf("ShmAttachment= %d\n",ShmAttachment);
+	if(ShmAttachment!=-1){
+		printf("Attachment is succesfull\n");
+		printf("Enter the data: ");
+		char data[10];
+		gets(data);
+		strcpy(ShmAttachment,data);
+		printf("Data given: %s\n",(char*)ShmAttachment);
+	}
+	else{
+		printf("Attachment is not succesfull\n");
+	}
+	int ShmDettachment=shmdt(ShmAttachment);
+	printf("ShmDettachment= %d\n",ShmDettachment);
+	if(ShmDettachment!=-1){
+		printf("Deattachment is succesfull\n");
+	}
+	else{
+		printf("Deattachment is not succesfull\n");
+	}
+	int ShmControl=shmctl(ShmId,IPC_RMID, NULL);
+	printf("ShmControl= %d\n",ShmControl);
+	if(ShmControl!=-1){
+		printf("Deattached Data is deleted\n");
+	}
+	else{
+		printf("Deattached Data is not deleted\n");
+	}
+}
+
+*/
