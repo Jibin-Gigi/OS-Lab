@@ -1,6 +1,6 @@
 #include<stdio.h>
 void main(){
-	int n,total_waitingTime=0,total_turnAroundTime=0;
+	int n,total_waitingTime,total_turnAroundTime;
 	printf("Enter the no. of processes: ");
 	scanf("%d",&n);
 	int burstTime[n];
