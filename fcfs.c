@@ -28,7 +28,7 @@ void main(){
 		
 	}
 	
-	float average_waitingTime=(float)total_waitingTime/n, average_turnAroundTime=total_turnAroundTime/n;
+	float average_waitingTime=(float)total_waitingTime/n, average_turnAroundTime=(float)total_turnAroundTime/n;
 	
 	printf("Process Name\tWaiting Time\tTurn Around Time\n");
 	for(int i=0;i<n;i++){
