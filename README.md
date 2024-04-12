@@ -16,3 +16,7 @@
 ![Screenshot from 2024-04-05 11-38-36](https://github.com/Jibin-Gigi/OS-Lab/assets/144718331/ec432390-f164-4e05-9491-bb1cfa9fa353)
 
 ![Screenshot from 2024-04-12 11-24-35](https://github.com/Jibin-Gigi/OS-Lab/assets/144718331/c21b7e71-11bb-42a9-8e28-2e4f55d152cd)
+
+
+
+![Screenshot from 2024-04-12 12-01-08](https://github.com/Jibin-Gigi/OS-Lab/assets/144718331/e932d7e2-648c-4bc4-8f36-d81fe1dcedb2)
