@@ -7,9 +7,9 @@ void main(){
 	int burstTime[n];
 	int processName[n];
 	int remainingTime[n];
-	int timeQuantom;
-	printf("Enter time Quantom: ");
-	scanf("%d",&timeQuantom);
+	int timeQuantum;
+	printf("Enter time quantum: ");
+	scanf("%d",&timeQuantum);
 	printf("Enter the process names,burst time\n\n");
 	printf("Process name\tBurst Time\n");
 	for(int i=0;i<n;i++){
@@ -22,9 +22,9 @@ void main(){
 	
 	while(flag!=n){
 		for(int i=0;i<n;i++){
-			if(remainingTime[i]>timeQuantom){
-				remainingTime[i]=remainingTime[i]-timeQuantom;
-				total=total+timeQuantom;
+			if(remainingTime[i]>timeQuantum){
+				remainingTime[i]=remainingTime[i]-timeQuantum;
+				total=total+timeQuantum;
 			}
 			else if(remainingTime[i]==0){
 				
