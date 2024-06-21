@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 
 void main() {
     int num_processes, num_resources, i, j, k=0, completed=0, safe_flag=0, exec_count=0;
@@ -74,7 +73,7 @@ void main() {
         }
         if(safe_flag == 0) {
             printf("No safe sequence exists!\n");
-            exit(0);
+            return ;
         }
     }
 
