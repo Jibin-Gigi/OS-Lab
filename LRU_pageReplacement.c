@@ -1,65 +1,65 @@
 #include <stdio.h>
-#include <stdbool.h>
 
 int main() {
-    int no_frame, no_request, i, pgf = 0, j = 0;
+    int numFrames, numRequests, i, pageFaults = 0, currentIndex = 0;
 
     printf("Enter the number of requests: ");
-    scanf("%d", &no_request);
+    scanf("%d", &numRequests);
 
     printf("Enter the number of frames: ");
-    scanf("%d", &no_frame);
+    scanf("%d", &numFrames);
 
-    int frame[no_frame], req[no_request], used[no_frame];
+    int frames[numFrames], requests[numRequests], used[numFrames];
 
-    for (i = 0; i < no_frame; i++) {
-        frame[i] = -1;
+    for (i = 0; i < numFrames; i++) {
+        frames[i] = -1;
         used[i] = 0;
     }
 
     printf("Enter the requests:\n");
-    for (i = 0; i < no_request; i++) {
-        scanf("%d", &req[i]);
+    for (i = 0; i < numRequests; i++) {
+        scanf("%d", &requests[i]);
     }
 
     printf("Page replacement (LRU):\n");
 
-    for (i = 0; i < no_request; i++) {
-        int avail = 0;
-        printf("%d: ", req[i]);
+    for (i = 0; i < numRequests; i++) {
+        int available = 0;
+        printf("%d: ", requests[i]);
 
-        for (int a = 0; a < no_frame; a++) {
-            if (frame[a] == req[i]) {
-                avail = 1;
-                used[a] = i + 1;
+        for (int j = 0; j < numFrames; j++) {
+            if (frames[j] == requests[i]) {
+                available = 1;
+                used[j] = i + 1;
                 break;
             }
         }
 
-        if (avail == 0) {
-            int least_used = 0;
-            for (int a = 1; a < no_frame; a++) {
-                if (used[a] < used[least_used])
-                    least_used = a;
+        if (available == 0) {
+            int leastUsedIndex = 0;
+            for (int j = 1; j < numFrames; j++) {
+                if (used[j] < used[leastUsedIndex])
+                    leastUsedIndex = j;
             }
 
-           
-            frame[least_used] = req[i];
-            used[least_used] = i + 1;
-            pgf++;
+            frames[leastUsedIndex] = requests[i];
+            used[leastUsedIndex] = i + 1;
+            pageFaults++;
         }
 
-       
-        for (int a = 0; a < no_frame; a++) {
-            if (frame[a] != -1)
-                printf("%d ", frame[a]);
+
+
+        for (int j = 0; j < numFrames; j++) {
+            if (frames[j] != -1)
+                printf("%d ", frames[j]);
             else
                 printf("x ");
         }
         printf("\n");
     }
-    printf("Total page faults = %d\n", pgf);
+    printf("Total page faults = %d\n", pageFaults);
+    printf("Total page hits = %d\n", numRequests - pageFaults); 
+
 
     return 0;
 }
-
