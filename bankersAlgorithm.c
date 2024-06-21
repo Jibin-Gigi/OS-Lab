@@ -1,93 +1,86 @@
-#include<stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-void main(){
-	int totalProcess,totalResources;
-	printf("Enter the no. of processes: ");
-	scanf("%d",&totalProcess);
-	printf("Enter the no. of resources required :  ");
-	scanf("%d",&totalResources);
-	int allocation[totalProcess][totalResources],max[totalProcess][totalResources],need[totalProcess][totalResources];
-	int safeSequence[totalProcess],flag[totalProcess];
-	int available[totalResources],sum[totalResources];
-	int count=0,s=0;
-	int total[totalResources];
-	
-	printf("Enter total resources");
-	for(int i=0;i<totalResources;i++){
-		scanf("%d",&total[i]);
-	}
-	
-	printf("Enter the resources already allocated for each processes: \n");
-	for(int i=0;i<totalProcess;i++){
-		printf("P%d\t",i);
-		for(int j=0;j<totalResources;j++){
-			scanf("%d",&allocation[i][j]);
-		}
-		flag[i]=0;
-		sum[i]=0;
-	}
-	
-	printf("Enter the maximum resources required for each processes: ");
-	for(int i=0;i<totalProcess;i++){
-		printf("P%d\t",i);
-		for(int j=0;j<totalResources;j++){
-			scanf("%d",&max[i][j]);
-		}
-	}
-	
-	printf("The resources needed for each processes is: \n");
-	for(int i=0;i<totalProcess;i++){
-		printf("P%d\t",i);
-		for(int j=0;j<totalResources;j++){
-			need[i][j]=max[i][j]-allocation[i][j];
-			printf("%d",need[i][j]);
-		}
-		printf("\n");
-	}
-	
-	//Calculation
-	for(int i=0;i<totalProcess;i++){
-		for(int j=0;j<totalResources;j++){
-			sum[j]=sum[j]+allocation[i][j];
-		}
-		
-		if(sum[i]>total[i]){
-			printf("Total memory blocks is less than sum of allocations...!! Error !!");
-			exit(0);
-		}
-	}
-	
-	for(int j=0;j<totalResources;j++){
-		available[j]=total[j] - sum[j];
-	}
-	
-	//Banker's Algorithm 
-	for(int i=0;i<totalProcess;i++){
-		if(flag[i]==1)
-			continue;
-		for(int j=0;j<totalResources;j++){
-			if(need[i][j]<available[j]){
-				count++;
-			}
-			
-		}
-		
-		if(count==totalResources){
-			for(int k=0;k<totalResources;k++){
-				available[k]=allocation[i][k];
-					
-			}
-			
-			flag[i]=1;
-			safeSequence[i]=s+1;
-			count=0;
-		}
-		
-		
-	}	
-	
-	printf("Safe sequence: ");
-	for(int i=0;i<totalResources;i++){
-		printf("P%d -> ",safeSequence[i]);
-	}
+void main() {
+    int num_processes, num_resources, i, j, k=0, completed=0, safe_flag=0, exec_count=0;
+
+    printf("Enter no. of processes: ");
+    scanf("%d", &num_processes);
+
+    printf("Enter no. of resources: ");
+    scanf("%d", &num_resources);
+
+    int visited[num_processes];
+    int safe_sequence[num_processes];
+
+    int allocation[num_processes][num_resources];
+    int max_need[num_processes][num_resources];
+    int available[num_resources];
+    int resource_need[num_processes][num_resources];
+
+    printf("Enter the available instances: ");
+    for(i = 0; i < num_resources; i++)
+        scanf("%d", &available[i]);
+
+    printf("Enter the maximum need of each process:\n");
+    for(i = 0; i < num_processes; i++) {
+        printf("P%d : ", i);
+        for(j = 0; j < num_resources; j++)
+            scanf("%d", &max_need[i][j]);
+
+        visited[i] = 0;
+    }
+
+    printf("\nEnter the allocation of resources to each process\n");
+    for(i = 0; i < num_processes; i++) {
+        printf("P%d : ", i);
+        for(j = 0; j < num_resources; j++)
+            scanf("%d", &allocation[i][j]);
+
+        visited[i] = 0;
+    }
+
+    printf("\nAllocation\tMax\tNeed\n");
+    for(i = 0; i < num_processes; i++) {
+        for(j = 0; j < num_resources; j++)
+            printf("%d ", allocation[i][j]);
+        printf("\t\t");
+        for(j = 0; j < num_resources; j++)
+            printf("%d ", max_need[i][j]);
+        printf("\t");
+        for(j = 0; j < num_resources; j++) {
+            resource_need[i][j] = max_need[i][j] - allocation[i][j];
+            printf("%d ", resource_need[i][j]);
+        }
+        printf("\n");
+    }
+
+    while(completed < num_processes) {
+        safe_flag = 0;
+        for(i = 0; i < num_processes; i++) {
+            exec_count = 0;
+            for(j = 0; j < num_resources; j++) {
+                if(resource_need[i][j] <= available[j])
+                    exec_count++;
+            }
+            if(exec_count == num_resources && visited[i] == 0) {
+                for(j = 0; j < num_resources; j++)
+                    available[j] += allocation[i][j];
+                safe_flag = 1;
+                visited[i] = 1;
+                completed++;
+                safe_sequence[k++] = i;
+            }
+        }
+        if(safe_flag == 0) {
+            printf("No safe sequence exists!\n");
+            exit(0);
+        }
+    }
+
+    printf("\nSafe Sequence: ");
+    printf("<");
+    for(i = 0; i < num_processes; i++)
+        printf("P%d ", safe_sequence[i]);
+    printf(">\n");
 }
