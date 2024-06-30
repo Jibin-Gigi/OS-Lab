@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 int main() {
-    int RQ[100], i, j, n, TotalHeadMovement = 0, initial, size, move;
+    int RQ[100], i, j, n, TotalHeadMovement = 0, initial, size, seek_time = 0;
 
     printf("Enter the number of Requests: ");
     scanf("%d", &n);
@@ -17,10 +17,7 @@ int main() {
     printf("Enter total disk size: ");
     scanf("%d", &size);
 
-    printf("Enter the head movement direction for high 1 and for low 0\n");
-    scanf("%d", &move);
-
-    // Sort the request array
+    
     for (i = 0; i < n; i++) {
         for (j = 0; j < n - i - 1; j++) {
             if (RQ[j] > RQ[j + 1]) {
@@ -39,45 +36,33 @@ int main() {
         }
     }
 
-    // If movement is towards high value
-    if (move == 1) {
-        printf("Head movement steps:\n");
+    
+    printf("Head movement steps:\n");
+    for (i = index; i < n; i++) {
+        seek_time = abs(RQ[i] - initial);
+        printf("Move from %d to %d (Seek Time: %d)\n", initial, RQ[i], seek_time);
+        TotalHeadMovement += seek_time;
+        initial = RQ[i];
+    }
 
-        for (i = index; i < n; i++) {
-            printf("Move from %d to %d\n", initial, RQ[i]);
-            TotalHeadMovement += abs(RQ[i] - initial);
-            initial = RQ[i];
-        }
+    
+    seek_time = abs(size - 1 - initial);
+    printf("Move from %d to %d (Seek Time: %d)\n", initial, size - 1, seek_time);
+    TotalHeadMovement += seek_time;
+    initial = size - 1;
 
-        
-        printf("Move from %d to %d\n", RQ[n - 1], 0);
-        TotalHeadMovement += RQ[n - 1]; 
+    
+    seek_time = size - 1;
+    printf("Move from %d to %d (Seek Time: %d)\n", initial, 0, seek_time);
+    TotalHeadMovement += seek_time;
+    initial = 0;
 
-        initial = 0;
-        for (i = 0; i < index; i++) {
-            printf("Move from %d to %d\n", initial, RQ[i]);
-            TotalHeadMovement += abs(RQ[i] - initial);
-            initial = RQ[i];
-        }
-    } else { // If movement is towards low value
-        printf("Head movement steps:\n");
-
-        for (i = index - 1; i >= 0; i--) {
-            printf("Move from %d to %d\n", initial, RQ[i]);
-            TotalHeadMovement += abs(RQ[i] - initial);
-            initial = RQ[i];
-        }
-
-        
-        printf("Move from %d to %d\n", RQ[0], size - 1);
-        TotalHeadMovement += (size - 1 - RQ[0] + 1);
-
-        initial = size - 1;
-        for (i = n - 1; i >= index; i--) {
-            printf("Move from %d to %d\n", initial, RQ[i]);
-            TotalHeadMovement += abs(RQ[i] - initial);
-            initial = RQ[i];
-        }
+    
+    for (i = 0; i < index; i++) {
+        seek_time = abs(RQ[i] - initial);
+        printf("Move from %d to %d (Seek Time: %d)\n", initial, RQ[i], seek_time);
+        TotalHeadMovement += seek_time;
+        initial = RQ[i];
     }
 
     printf("Total head movement is %d\n", TotalHeadMovement);
