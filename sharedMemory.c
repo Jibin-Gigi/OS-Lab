@@ -51,46 +51,61 @@ int main(int argc, char *argv[ ])
 
 
 /*
-#include<stdio.h>
-#include<unistd.h>
-#include<stdlib.h>
-#include<sys/ipc.h>
-#include<sys/shm.h>
-#include<sys/types.h>
-void main(){
-	key_t m =ftok(".","s");
-	printf("Key= %d\n",m);
-	int ShmId=shmget(m,1022,IPC_CREAT|0666);
-	printf("ShmId= %d\n",ShmId);
-	int *ShmAttachment=shmat(ShmId,0,0);
-	printf("ShmAttachment= %d\n",ShmAttachment);
-	if(ShmAttachment!=-1){
-		printf("Attachment is succesfull\n");
-		printf("Enter the data: ");
-		char data[10];
-		gets(data);
-		strcpy(ShmAttachment,data);
-		printf("Data given: %s\n",(char*)ShmAttachment);
-	}
-	else{
-		printf("Attachment is not succesfull\n");
-	}
-	int ShmDettachment=shmdt(ShmAttachment);
-	printf("ShmDettachment= %d\n",ShmDettachment);
-	if(ShmDettachment!=-1){
-		printf("Deattachment is succesfull\n");
-	}
-	else{
-		printf("Deattachment is not succesfull\n");
-	}
-	int ShmControl=shmctl(ShmId,IPC_RMID, NULL);
-	printf("ShmControl= %d\n",ShmControl);
-	if(ShmControl!=-1){
-		printf("Deattached Data is deleted\n");
-	}
-	else{
-		printf("Deattached Data is not deleted\n");
-	}
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <sys/types.h>
+
+int main() {
+    key_t key = ftok(".", 's');
+    if (key == -1) {
+        perror("ftok");
+        exit(1);
+    }
+    printf("Key= %d\n", key);
+
+    int shmId = shmget(key, 1022, IPC_CREAT | 0666);
+    if (shmId == -1) {
+        perror("shmget");
+        exit(1);
+    }
+    printf("ShmId= %d\n", shmId);
+
+    char *shmAttachment = shmat(shmId, 0, 0);
+    if (shmAttachment == (char *)-1) {
+        perror("shmat");
+        exit(1);
+    }
+    printf("ShmAttachment= %p\n", (void *)shmAttachment);
+
+    printf("Attachment is successful\n");
+    printf("Enter the data: ");
+    char data[100];
+    if (fgets(data, sizeof(data), stdin) != NULL) {
+        data[strcspn(data, "\n")] = '\0';  // Remove newline character
+        strcpy(shmAttachment, data);
+        printf("Data given: %s\n", shmAttachment);
+    } else {
+        perror("fgets");
+        exit(1);
+    }
+
+    if (shmdt(shmAttachment) == -1) {
+        perror("shmdt");
+        exit(1);
+    }
+    printf("Detachment is successful\n");
+
+    if (shmctl(shmId, IPC_RMID, NULL) == -1) {
+        perror("shmctl");
+        exit(1);
+    }
+    printf("Removed shared memory segment successfully\n");
+
+    return 0;
 }
 
 */
